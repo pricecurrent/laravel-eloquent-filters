@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Pricecurrent\LaravelEloquentFilters\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class LaravelEloquentFiltersCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-eloquent-filters';
 
     public $description = 'My command';
 

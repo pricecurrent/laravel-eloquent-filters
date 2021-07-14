@@ -1,17 +1,17 @@
 {
-    "name": "vendor_slug/package_slug",
-    "description": ":package_description",
+    "name": "pricecurrent/laravel-eloquent-filters",
+    "description": "Advanced Laravel models filtering capabilities",
     "keywords": [
-        ":vendor_name",
+        "pricecurrent",
         "laravel",
-        "package_slug"
+        "laravel-eloquent-filters"
     ],
-    "homepage": "https://github.com/vendor_slug/package_slug",
+    "homepage": "https://github.com/pricecurrent/laravel-eloquent-filters",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Andrew Malinnikov",
+            "email": "code.bright.anywhere@gmail.com",
             "role": "Developer"
         }
     ],
@@ -30,13 +30,13 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories"
+            "Pricecurrent\\LaravelEloquentFilters\\": "src",
+            "Pricecurrent\\LaravelEloquentFilters\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "Pricecurrent\\LaravelEloquentFilters\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -50,10 +50,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "Pricecurrent\\LaravelEloquentFilters\\LaravelEloquentFiltersServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\SkeletonFacade"
+                "LaravelEloquentFilters": "Pricecurrent\\LaravelEloquentFilters\\LaravelEloquentFiltersFacade"
             }
         }
     },

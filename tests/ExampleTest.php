@@ -1,6 +1,6 @@
 <?php
 
-namespace VendorName\Skeleton\Tests;
+namespace Pricecurrent\LaravelEloquentFilters\Tests;
 
 class ExampleTest extends TestCase
 {
