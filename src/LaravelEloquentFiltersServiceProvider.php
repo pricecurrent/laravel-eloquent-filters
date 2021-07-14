@@ -2,9 +2,9 @@
 
 namespace Pricecurrent\LaravelEloquentFilters;
 
+use Pricecurrent\LaravelEloquentFilters\Commands\LaravelEloquentFiltersCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Pricecurrent\LaravelEloquentFilters\Commands\LaravelEloquentFiltersCommand;
 
 class LaravelEloquentFiltersServiceProvider extends PackageServiceProvider
 {
