@@ -1,0 +1,25 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ rootNamespace }}Filters;
+use Pricecurrent\LaravelEloquentFilters\AbstractQueryFilter;
+use Pricecurrent\LaravelEloquentFilters\Contracts\QueryFilterContract;
+
+class {{ class }} extends AbstractQueryFilter implements QueryFilterContract
+{
+    public function field()
+    {
+        return '';
+    }
+
+    public function operator()
+    {
+        return '';
+    }
+
+    public function value()
+    {
+        return '';
+    }
+}

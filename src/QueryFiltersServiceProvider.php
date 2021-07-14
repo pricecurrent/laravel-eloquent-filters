@@ -2,11 +2,11 @@
 
 namespace Pricecurrent\LaravelEloquentFilters;
 
-use Pricecurrent\LaravelEloquentFilters\Commands\LaravelEloquentFiltersCommand;
+use Pricecurrent\LaravelEloquentFilters\Commands\FilterMakeCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class LaravelEloquentFiltersServiceProvider extends PackageServiceProvider
+class QueryFiltersServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -17,9 +17,6 @@ class LaravelEloquentFiltersServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('laravel-eloquent-filters')
-            ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_laravel-eloquent-filters_table')
-            ->hasCommand(LaravelEloquentFiltersCommand::class);
+            ->hasCommand(FilterMakeCommand::class);
     }
 }
