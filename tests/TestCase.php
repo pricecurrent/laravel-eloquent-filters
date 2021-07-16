@@ -2,10 +2,12 @@
 
 namespace Pricecurrent\LaravelEloquentFilters\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Pricecurrent\LaravelEloquentFilters\Tests\Http\TestController;
 use Pricecurrent\LaravelEloquentFilters\QueryFiltersServiceProvider;
 
 class TestCase extends Orchestra
@@ -17,6 +19,8 @@ class TestCase extends Orchestra
         Factory::guessFactoryNamesUsing(
             fn (string $modelName) => 'Pricecurrent\\LaravelEloquentFilters\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
+
+        Route::get('/', [TestController::class, 'index'])->name('test');
     }
 
     protected function getPackageProviders($app)
@@ -41,6 +45,7 @@ class TestCase extends Orchestra
                 $table->string('text')->nullable();
                 $table->string('occupation')->nullable();
                 $table->integer('age')->nullable();
+                $table->boolean('is_active')->default(false);
                 $table->timestamps();
                 $table->softDeletes();
             });

@@ -2,9 +2,11 @@
 
 namespace Pricecurrent\LaravelEloquentFilters;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
 use LogicException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Builder;
+use Pricecurrent\LaravelEloquentFilters\Contracts\Nullable;
 use Pricecurrent\LaravelEloquentFilters\Contracts\ComposeableFilter;
 use Pricecurrent\LaravelEloquentFilters\Contracts\QueryFilterContract;
 
@@ -28,6 +30,23 @@ class QueryFilters extends Collection
         return parent::make($items);
     }
 
+    public static function makeFromRequest(Request $request)
+    {
+        $filters = collect($request->filters())
+            ->filter(function ($filter, $field) use ($request) {
+                if (static::filterDoesntNeedValue($filter)) {
+                    return true;
+                }
+
+                return !!$request->get($field) === true;
+            })
+            ->map(function ($filter, $field) use ($request) {
+                return new $filter($request->get($field));
+            });
+
+        return static::make($filters);
+    }
+
     public function apply(Builder $builder)
     {
         return tap($builder, function ($builder) {
@@ -43,6 +62,14 @@ class QueryFilters extends Collection
                 return $filter->apply($builder);
             });
         });
+    }
+
+    protected static function filterDoesntNeedValue($filter)
+    {
+        $reflect = new \ReflectionClass($filter);
+
+        return collect($reflect->getInterfaces())
+            ->contains(fn ($interface) => $interface->name == Nullable::class);
     }
 
     protected static function validateParamters($items)

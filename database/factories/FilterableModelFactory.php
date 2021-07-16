@@ -14,7 +14,7 @@ class FilterableModelFactory extends Factory
         return [
             'name' => $this->faker->name,
             'text' => $this->faker->text,
+            'is_active' => true,
         ];
     }
 }
-
