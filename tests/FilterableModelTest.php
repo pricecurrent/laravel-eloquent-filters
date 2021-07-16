@@ -86,7 +86,7 @@ class FilterableModelTest extends TestCase
             'occupation' => 'student',
             'age' => 18,
         ]);
-        $filter = new OccupationOrAgeFilter(occupation: 'php dev', age: 18);
+        $filter = new OccupationOrAgeFilter('php dev', 18);
 
         $query = FilterableModel::filter(new QueryFilters([$filter]));
         $results = $query->get();
