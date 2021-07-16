@@ -2,13 +2,13 @@
 
 namespace Pricecurrent\LaravelEloquentFilters\Tests;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Pricecurrent\LaravelEloquentFilters\Tests\Http\TestController;
 use Pricecurrent\LaravelEloquentFilters\QueryFiltersServiceProvider;
+use Pricecurrent\LaravelEloquentFilters\Tests\Http\TestController;
 
 class TestCase extends Orchestra
 {

@@ -2,7 +2,6 @@
 
 namespace Pricecurrent\LaravelEloquentFilters\Tests;
 
-use Pricecurrent\LaravelEloquentFilters\Tests\TestCase;
 use Pricecurrent\LaravelEloquentFilters\Tests\Models\FilterableModel;
 
 class EndpointTest extends TestCase
@@ -24,7 +23,7 @@ class EndpointTest extends TestCase
         ]);
 
         $response = $this->json('get', route('test'), [
-            'name' => 'J'
+            'name' => 'J',
         ]);
 
         $response->assertOk();

@@ -2,12 +2,12 @@
 
 namespace Pricecurrent\LaravelEloquentFilters;
 
-use LogicException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Builder;
-use Pricecurrent\LaravelEloquentFilters\Contracts\Nullable;
+use LogicException;
 use Pricecurrent\LaravelEloquentFilters\Contracts\ComposeableFilter;
+use Pricecurrent\LaravelEloquentFilters\Contracts\Nullable;
 use Pricecurrent\LaravelEloquentFilters\Contracts\QueryFilterContract;
 
 class QueryFilters extends Collection
@@ -38,7 +38,7 @@ class QueryFilters extends Collection
                     return true;
                 }
 
-                return !!$request->get($field) === true;
+                return ! ! $request->get($field) === true;
             })
             ->map(function ($filter, $field) use ($request) {
                 return new $filter($request->get($field));
