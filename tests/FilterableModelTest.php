@@ -3,10 +3,11 @@
 namespace Pricecurrent\LaravelEloquentFilters\Tests;
 
 use Pricecurrent\LaravelEloquentFilters\QueryFilters;
-use Pricecurrent\LaravelEloquentFilters\Tests\Filters\AgeGreaterThanFilter;
+use Pricecurrent\LaravelEloquentFilters\Tests\Filters\LikeFilter;
 use Pricecurrent\LaravelEloquentFilters\Tests\Filters\NameFilter;
-use Pricecurrent\LaravelEloquentFilters\Tests\Filters\OccupationOrAgeFilter;
 use Pricecurrent\LaravelEloquentFilters\Tests\Models\FilterableModel;
+use Pricecurrent\LaravelEloquentFilters\Tests\Filters\AgeGreaterThanFilter;
+use Pricecurrent\LaravelEloquentFilters\Tests\Filters\OccupationOrAgeFilter;
 
 class FilterableModelTest extends TestCase
 {
@@ -95,5 +96,31 @@ class FilterableModelTest extends TestCase
         $this->assertTrue($results->contains($modelA));
         $this->assertTrue($results->contains($modelB));
         $this->assertTrue($results->contains($modelC));
+    }
+
+    /**
+     * @test
+     */
+    public function it_filters_by_field_agnostic_filter()
+    {
+        $filter = (new LikeFilter('Jan'))->setFieldResolver('name');
+
+        $modelA = FilterableModel::factory()->create(['name' => 'January']);
+        $modelB = FilterableModel::factory()->create(['name' => 'February']);
+
+        $results = FilterableModel::filter(QueryFilters::make([$filter]))->get();
+
+        $this->assertEquals(1, $results->count());
+        $this->assertTrue($results->contains($modelA));
+
+        // using same filter to filter by another field
+        $modelA = FilterableModel::factory()->create(['text' => 'january is a first month']);
+        $modelB = FilterableModel::factory()->create(['text' => 'nothing about that keyword']);
+        $filter->setFieldResolver(fn () => 'text');
+
+        $results = FilterableModel::filter(QueryFilters::make([$filter]))->get();
+
+        $this->assertEquals(1, $results->count());
+        $this->assertTrue($results->contains($modelA));
     }
 }

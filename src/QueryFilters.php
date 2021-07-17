@@ -2,12 +2,13 @@
 
 namespace Pricecurrent\LaravelEloquentFilters;
 
-use Illuminate\Database\Eloquent\Builder;
+use LogicException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use LogicException;
-use Pricecurrent\LaravelEloquentFilters\Contracts\ComposeableFilter;
+use Illuminate\Database\Eloquent\Builder;
 use Pricecurrent\LaravelEloquentFilters\Contracts\Nullable;
+use Pricecurrent\LaravelEloquentFilters\Contracts\FieldAgnostic;
+use Pricecurrent\LaravelEloquentFilters\Contracts\ComposeableFilter;
 use Pricecurrent\LaravelEloquentFilters\Contracts\QueryFilterContract;
 
 class QueryFilters extends Collection
@@ -30,10 +31,22 @@ class QueryFilters extends Collection
         return parent::make($items);
     }
 
+    protected static function qualifyFilter($filter, $field)
+    {
+        if (is_string($filter)) {
+            return [$filter, $field];
+        }
+
+        if (is_array($filter)) {
+            return [$filter['name'], $filter['field']];
+        }
+    }
+
     public static function makeFromRequest(Request $request)
     {
         $filters = collect($request->filters())
             ->filter(function ($filter, $field) use ($request) {
+                list($filter, $dbField) = static::qualifyFilter($filter, $field);
                 if (static::filterDoesntNeedValue($filter)) {
                     return true;
                 }
@@ -41,7 +54,13 @@ class QueryFilters extends Collection
                 return ! ! $request->get($field) === true;
             })
             ->map(function ($filter, $field) use ($request) {
-                return new $filter($request->get($field));
+                list($filter, $dbField) = static::qualifyFilter($filter, $field);
+                return tap(new $filter($request->get($field)), function ($filter) use ($dbField) {
+                    if ($filter instanceof FieldAgnostic) {
+                        $filter->setFieldResolver($dbField);
+                    }
+                    return $filter;
+                });
             });
 
         return static::make($filters);

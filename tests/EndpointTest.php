@@ -22,8 +22,9 @@ class EndpointTest extends TestCase
             'name' => 'Joey', 'age' => 23, 'occupation' => 'alcoholic',
         ]);
 
+        $this->withoutExceptionHandling();
         $response = $this->json('get', route('test'), [
-            'name' => 'J',
+            'username' => 'J',
         ]);
 
         $response->assertOk();
@@ -63,7 +64,7 @@ class EndpointTest extends TestCase
     }
 
     /** @test */
-    public function it_applies_nullable_filters_to_a_field_where_value_is_not_expected()
+    public function it_applies_nullable_filters_to_a_field_where_a_value_is_not_expected()
     {
         $john = FilterableModel::factory()->create([
             'name' => 'John', 'age' => 38, 'occupation' => 'php dev', 'is_active' => false,
@@ -78,9 +79,8 @@ class EndpointTest extends TestCase
             'name' => 'Joey', 'age' => 23, 'occupation' => 'alcoholic', 'is_active' => false,
         ]);
 
-        // is supposed to filter by is_active = true field in the DB,
-        // and the ones who is older than 18.
-        // but the API design is to NOT pass any value along with it
+        // is supposed to filter by is_active = true field in the DB, but the
+        // API design is to NOT pass any value along with a `active` param
         $response = $this->json('get', route('test'), [
             'age' => 18,
             'active',
