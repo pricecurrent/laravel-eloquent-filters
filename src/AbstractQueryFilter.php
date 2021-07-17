@@ -24,6 +24,7 @@ abstract class AbstractQueryFilter
 
         if (is_callable($this->fieldResolver)) {
             $callable = $this->fieldResolver;
+
             return $callable();
         }
 
@@ -50,6 +51,7 @@ abstract class AbstractQueryFilter
     public function setFieldResolver($resolver)
     {
         $this->fieldResolver = $resolver;
+
         return $this;
     }
 }
