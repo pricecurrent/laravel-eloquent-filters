@@ -1,7 +1,7 @@
 # Advanced Laravel models filtering capabilities
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/pricecurrent/laravel-eloquent-filters.svg?style=flat-square)](https://packagist.org/packages/pricecurrent/laravel-eloquent-filters)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/pricecurrent/laravel-eloquent-filters/run-tests?label=tests)](https://github.com/pricecurrent/laravel-eloquent-filters/actions?query=workflow%3Arun-tests+branch%3Amaster)
+[![run-tests](https://github.com/pricecurrent/laravel-eloquent-filters/actions/workflows/run-tests.yml/badge.svg)](https://github.com/pricecurrent/laravel-eloquent-filters/actions/workflows/run-tests.yml)
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/pricecurrent/laravel-eloquent-filters/Check%20&%20fix%20styling?label=code%20style)](https://github.com/pricecurrent/laravel-eloquent-filters/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
 [![Total Downloads](https://img.shields.io/packagist/dt/pricecurrent/laravel-eloquent-filters.svg?style=flat-square)](https://packagist.org/packages/pricecurrent/laravel-eloquent-filters)
 

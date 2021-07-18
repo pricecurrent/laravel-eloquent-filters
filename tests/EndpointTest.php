@@ -91,4 +91,34 @@ class EndpointTest extends TestCase
         $results = collect($response->json('data'));
         $this->assertTrue($results->contains(fn ($i) => $i['name'] == 'Bradley'));
     }
+
+    /**
+     * @test
+     */
+    public function it_auto_applies_filters_defined_in_the_associated_request_class()
+    {
+        $john = FilterableModel::factory()->create([
+                'name' => 'John', 'age' => 38, 'occupation' => 'php dev',
+            ]);
+        $jane = FilterableModel::factory()->create([
+                'name' => 'Jane', 'age' => 18, 'occupation' => 'student',
+            ]);
+        $bradley = FilterableModel::factory()->create([
+                'name' => 'Bradley', 'age' => 22, 'occupation' => null,
+            ]);
+        $joey = FilterableModel::factory()->create([
+                'name' => 'Joey', 'age' => 23, 'occupation' => 'alcoholic',
+            ]);
+
+        $response = $this->json('get', route('test-auto-apply-filters'), [
+                'age' => 18,
+            ]);
+
+        $response->assertOk();
+        $this->assertCount(3, $response->json('data'));
+        $results = collect($response->json('data'));
+        $this->assertTrue($results->contains(fn ($i) => $i['name'] == 'John'));
+        $this->assertTrue($results->contains(fn ($i) => $i['name'] == 'Bradley'));
+        $this->assertTrue($results->contains(fn ($i) => $i['name'] == 'Joey'));
+    }
 }

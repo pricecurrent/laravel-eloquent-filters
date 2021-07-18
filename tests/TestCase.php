@@ -2,13 +2,14 @@
 
 namespace Pricecurrent\LaravelEloquentFilters\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Pricecurrent\LaravelEloquentFilters\QueryFiltersServiceProvider;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Pricecurrent\LaravelEloquentFilters\Tests\Http\TestController;
+use Pricecurrent\LaravelEloquentFilters\QueryFiltersServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -21,6 +22,10 @@ class TestCase extends Orchestra
         );
 
         Route::get('/', [TestController::class, 'index'])->name('test');
+        Route::get('/auto-apply-filters', [TestController::class, 'indexAutoApply'])->name('test-auto-apply-filters');
+        Builder::macro('autoApplyFilters', function ($query) {
+            dd($query);
+        });
     }
 
     protected function getPackageProviders($app)
