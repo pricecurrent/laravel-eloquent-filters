@@ -3,11 +3,11 @@
 namespace Pricecurrent\LaravelEloquentFilters\Tests;
 
 use Pricecurrent\LaravelEloquentFilters\QueryFilters;
+use Pricecurrent\LaravelEloquentFilters\Tests\Filters\AgeGreaterThanFilter;
 use Pricecurrent\LaravelEloquentFilters\Tests\Filters\LikeFilter;
 use Pricecurrent\LaravelEloquentFilters\Tests\Filters\NameFilter;
-use Pricecurrent\LaravelEloquentFilters\Tests\Models\FilterableModel;
-use Pricecurrent\LaravelEloquentFilters\Tests\Filters\AgeGreaterThanFilter;
 use Pricecurrent\LaravelEloquentFilters\Tests\Filters\OccupationOrAgeFilter;
+use Pricecurrent\LaravelEloquentFilters\Tests\Models\FilterableModel;
 
 class FilterableModelTest extends TestCase
 {
