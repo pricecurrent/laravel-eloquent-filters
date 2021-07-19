@@ -3,13 +3,11 @@
 namespace Pricecurrent\LaravelEloquentFilters\Tests\Http;
 
 use Pricecurrent\LaravelEloquentFilters\QueryFilters;
-use Pricecurrent\LaravelEloquentFilters\Tests\Http\TestRequest;
-use Pricecurrent\LaravelEloquentFilters\Tests\Filters\LikeFilter;
-use Pricecurrent\LaravelEloquentFilters\Contracts\FilterableRequest;
-use Pricecurrent\LaravelEloquentFilters\Tests\Filters\IsActiveFilter;
-use Pricecurrent\LaravelEloquentFilters\Tests\Models\FilterableModel;
-use Pricecurrent\LaravelEloquentFilters\Tests\Filters\OccupationFilter;
 use Pricecurrent\LaravelEloquentFilters\Tests\Filters\AgeGreaterThanFilter;
+use Pricecurrent\LaravelEloquentFilters\Tests\Filters\IsActiveFilter;
+use Pricecurrent\LaravelEloquentFilters\Tests\Filters\LikeFilter;
+use Pricecurrent\LaravelEloquentFilters\Tests\Filters\OccupationFilter;
+use Pricecurrent\LaravelEloquentFilters\Tests\Models\FilterableModel;
 
 class TestController
 {

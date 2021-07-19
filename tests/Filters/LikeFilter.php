@@ -4,8 +4,6 @@ namespace Pricecurrent\LaravelEloquentFilters\Tests\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 use Pricecurrent\LaravelEloquentFilters\AbstractQueryFilter;
-use Pricecurrent\LaravelEloquentFilters\Contracts\FieldAgnostic;
-use Pricecurrent\LaravelEloquentFilters\Contracts\QueryFilterContract;
 
 class LikeFilter extends AbstractQueryFilter
 {

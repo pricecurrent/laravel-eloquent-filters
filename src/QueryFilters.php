@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use LogicException;
-use Pricecurrent\LaravelEloquentFilters\Contracts\ComposeableFilter;
-use Pricecurrent\LaravelEloquentFilters\Contracts\FieldAgnostic;
-use Pricecurrent\LaravelEloquentFilters\Contracts\Nullable;
 use Pricecurrent\LaravelEloquentFilters\Contracts\QueryFilterContract;
 
 class QueryFilters extends Collection

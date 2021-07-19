@@ -2,11 +2,9 @@
 
 namespace Pricecurrent\LaravelEloquentFilters;
 
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
-use Illuminate\Database\Eloquent\Builder;
-use Pricecurrent\LaravelEloquentFilters\QueryFilters;
 
 class FilterableScope implements Scope
 {

@@ -2,13 +2,10 @@
 
 namespace Pricecurrent\LaravelEloquentFilters;
 
-use Spatie\LaravelPackageTools\Package;
-use Pricecurrent\LaravelEloquentFilters\Filterable;
-use Pricecurrent\LaravelEloquentFilters\QueryFilters;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Pricecurrent\LaravelEloquentFilters\FilterableScope;
 use Pricecurrent\LaravelEloquentFilters\Commands\FilterMakeCommand;
 use Pricecurrent\LaravelEloquentFilters\Contracts\FilterableRequest;
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class QueryFiltersServiceProvider extends PackageServiceProvider
 {
@@ -29,8 +26,8 @@ class QueryFiltersServiceProvider extends PackageServiceProvider
             $definedClasses = array_filter(
                 get_declared_classes(),
                 function ($className) {
-                    return !call_user_func(
-                        array(new \ReflectionClass($className), 'isInternal')
+                    return ! call_user_func(
+                        [new \ReflectionClass($className), 'isInternal']
                     );
                 }
             );
@@ -41,6 +38,7 @@ class QueryFiltersServiceProvider extends PackageServiceProvider
                 $definedClasses,
                 function ($className) use ($trait) {
                     $traits = class_uses($className);
+
                     return isset($traits[$trait]);
                 }
             );

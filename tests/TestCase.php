@@ -2,7 +2,6 @@
 
 namespace Pricecurrent\LaravelEloquentFilters\Tests;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Route;

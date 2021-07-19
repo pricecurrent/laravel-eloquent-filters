@@ -3,9 +3,7 @@
 namespace Pricecurrent\LaravelEloquentFilters\Tests\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
-use Pricecurrent\LaravelEloquentFilters\Contracts\Nullable;
 use Pricecurrent\LaravelEloquentFilters\AbstractQueryFilter;
-use Pricecurrent\LaravelEloquentFilters\Contracts\QueryFilterContract;
 
 class IsActiveFilter extends AbstractQueryFilter
 {

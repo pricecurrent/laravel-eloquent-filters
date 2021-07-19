@@ -3,10 +3,6 @@
 namespace Pricecurrent\LaravelEloquentFilters;
 
 use Illuminate\Database\Eloquent\Builder;
-use Pricecurrent\LaravelEloquentFilters\QueryFilters;
-use Pricecurrent\LaravelEloquentFilters\FilterableScope;
-use Pricecurrent\LaravelEloquentFilters\Contracts\FilterableRequest;
-use Pricecurrent\LaravelEloquentFilters\Exceptions\EloquentFiltersException;
 
 trait Filterable
 {
