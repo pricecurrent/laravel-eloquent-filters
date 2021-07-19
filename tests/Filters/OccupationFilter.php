@@ -2,10 +2,11 @@
 
 namespace Pricecurrent\LaravelEloquentFilters\Tests\Filters;
 
+use Illuminate\Database\Eloquent\Builder;
 use Pricecurrent\LaravelEloquentFilters\AbstractQueryFilter;
 use Pricecurrent\LaravelEloquentFilters\Contracts\QueryFilterContract;
 
-class OccupationFilter extends AbstractQueryFilter implements QueryFilterContract
+class OccupationFilter extends AbstractQueryFilter
 {
     protected $occupation;
 
@@ -14,18 +15,13 @@ class OccupationFilter extends AbstractQueryFilter implements QueryFilterContrac
         $this->occupation = $occupation;
     }
 
-    public function field()
+    public function apply(Builder $query): Builder
     {
-        return 'occupation';
+        return $query->where('occupation', '=', $this->occupation);
     }
 
-    public function operator()
+    public function isApplicable(): bool
     {
-        return '=';
-    }
-
-    public function value()
-    {
-        return $this->occupation;
+        return $this->occupation !== null;
     }
 }

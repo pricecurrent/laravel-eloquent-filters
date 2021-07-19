@@ -2,7 +2,6 @@
 
 namespace Pricecurrent\LaravelEloquentFilters\Contracts;
 
-interface Nullable
+interface FilterableRequest
 {
-    //
 }

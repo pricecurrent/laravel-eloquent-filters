@@ -2,9 +2,13 @@
 
 namespace Pricecurrent\LaravelEloquentFilters;
 
-use Pricecurrent\LaravelEloquentFilters\Commands\FilterMakeCommand;
 use Spatie\LaravelPackageTools\Package;
+use Pricecurrent\LaravelEloquentFilters\Filterable;
+use Pricecurrent\LaravelEloquentFilters\QueryFilters;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Pricecurrent\LaravelEloquentFilters\FilterableScope;
+use Pricecurrent\LaravelEloquentFilters\Commands\FilterMakeCommand;
+use Pricecurrent\LaravelEloquentFilters\Contracts\FilterableRequest;
 
 class QueryFiltersServiceProvider extends PackageServiceProvider
 {
@@ -18,5 +22,31 @@ class QueryFiltersServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-eloquent-filters')
             ->hasCommand(FilterMakeCommand::class);
+
+        $this->app->afterResolving(FilterableRequest::class, function ($resolved) {
+            $filters = QueryFilters::makeFromRequest($resolved);
+
+            $definedClasses = array_filter(
+                get_declared_classes(),
+                function ($className) {
+                    return !call_user_func(
+                        array(new \ReflectionClass($className), 'isInternal')
+                    );
+                }
+            );
+
+            $trait = Filterable::class;
+
+            $classes = array_filter(
+                $definedClasses,
+                function ($className) use ($trait) {
+                    $traits = class_uses($className);
+                    return isset($traits[$trait]);
+                }
+            );
+
+
+            collect($classes)->each(fn ($class) => $class::addGlobalScope(new FilterableScope($filters)));
+        });
     }
 }

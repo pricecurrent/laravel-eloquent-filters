@@ -2,10 +2,11 @@
 
 namespace Pricecurrent\LaravelEloquentFilters\Tests\Filters;
 
+use Illuminate\Database\Eloquent\Builder;
 use Pricecurrent\LaravelEloquentFilters\AbstractQueryFilter;
 use Pricecurrent\LaravelEloquentFilters\Contracts\QueryFilterContract;
 
-class AgeGreaterThanFilter extends AbstractQueryFilter implements QueryFilterContract
+class AgeGreaterThanFilter extends AbstractQueryFilter
 {
     protected $age;
 
@@ -14,18 +15,13 @@ class AgeGreaterThanFilter extends AbstractQueryFilter implements QueryFilterCon
         $this->age = $age;
     }
 
-    public function field()
+    public function apply(Builder $query): Builder
     {
-        return 'age';
+        return $query->where('age', '>', $this->age);
     }
 
-    public function operator()
+    public function isApplicable(): bool
     {
-        return '>';
-    }
-
-    public function value()
-    {
-        return $this->age;
+        return null !== $this->age && is_integer($this->age) && $this->age > 0;
     }
 }

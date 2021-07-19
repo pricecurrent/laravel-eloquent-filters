@@ -45,21 +45,11 @@ class QueryFilters extends Collection
     public static function makeFromRequest(Request $request)
     {
         $filters = collect($request->filters())
-            ->filter(function ($filter, $field) use ($request) {
-                list($filter, $dbField) = static::qualifyFilter($filter, $field);
-                if (static::filterDoesntNeedValue($filter)) {
-                    return true;
-                }
-
-                return ! ! $request->get($field) === true;
-            })
             ->map(function ($filter, $field) use ($request) {
                 list($filter, $dbField) = static::qualifyFilter($filter, $field);
 
                 return tap(new $filter($request->get($field)), function ($filter) use ($dbField) {
-                    if ($filter instanceof FieldAgnostic) {
-                        $filter->setFieldResolver($dbField);
-                    }
+                    $filter->setFieldResolver($dbField);
 
                     return $filter;
                 });
@@ -71,26 +61,14 @@ class QueryFilters extends Collection
     public function apply(Builder $builder)
     {
         return tap($builder, function ($builder) {
-            $this->each(function ($filter) use ($builder) {
-                if ($filter instanceof ComposeableFilter) {
-                    return $builder->where(function ($query) use ($filter) {
-                        collect($filter->composedByUsingOr())->each(function ($filter) use ($query) {
-                            return $filter->setUsingOr(true)->apply($query);
-                        });
-                    });
-                }
-
-                return $filter->apply($builder);
-            });
+            $this
+                ->filter(function ($filter) {
+                    return $filter->isApplicable();
+                })
+                ->each(function ($filter) use ($builder) {
+                    return $filter->apply($builder);
+                });
         });
-    }
-
-    protected static function filterDoesntNeedValue($filter)
-    {
-        $reflect = new \ReflectionClass($filter);
-
-        return collect($reflect->getInterfaces())
-            ->contains(fn ($interface) => $interface->name == Nullable::class);
     }
 
     protected static function validateParamters($items)

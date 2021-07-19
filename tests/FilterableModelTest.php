@@ -66,37 +66,6 @@ class FilterableModelTest extends TestCase
         $this->assertEquals('john', $user->name);
     }
 
-    /**
-     * @test
-     */
-    public function it_is_filtered_with_composable_filter()
-    {
-        $modelA = FilterableModel::factory()->create([
-            'occupation' => 'php dev',
-            'age' => 15,
-        ]);
-        $modelB = FilterableModel::factory()->create([
-            'occupation' => 'student',
-            'age' => 19,
-        ]);
-        $modelC = FilterableModel::factory()->create([
-            'occupation' => 'php dev',
-            'age' => 32,
-        ]);
-        $modelD = FilterableModel::factory()->create([
-            'occupation' => 'student',
-            'age' => 18,
-        ]);
-        $filter = new OccupationOrAgeFilter('php dev', 18);
-
-        $query = FilterableModel::filter(new QueryFilters([$filter]));
-        $results = $query->get();
-
-        $this->assertEquals(3, $results->count());
-        $this->assertTrue($results->contains($modelA));
-        $this->assertTrue($results->contains($modelB));
-        $this->assertTrue($results->contains($modelC));
-    }
 
     /**
      * @test
@@ -122,5 +91,23 @@ class FilterableModelTest extends TestCase
 
         $this->assertEquals(1, $results->count());
         $this->assertTrue($results->contains($modelA));
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_filter_that_is_not_applicable()
+    {
+        $modelA = FilterableModel::factory()->create(['age' => 18]);
+        $modelB = FilterableModel::factory()->create(['age' => 30]);
+
+        $results = FilterableModel::filter(
+            // no value provided so we skip the filtering by this criterion
+            QueryFilters::make([new AgeGreaterThanFilter(null)])
+        )->get();
+
+        $this->assertEquals(2, $results->count());
+        $this->assertTrue($results->contains($modelA));
+        $this->assertTrue($results->contains($modelB));
     }
 }

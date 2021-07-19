@@ -45,12 +45,8 @@
     },
     "extra": {
         "laravel": {
-            "providers": [
-                "Pricecurrent\\LaravelEloquentFilters\\LaravelEloquentFiltersServiceProvider"
-            ],
-            "aliases": {
-                "LaravelEloquentFilters": "Pricecurrent\\LaravelEloquentFilters\\LaravelEloquentFiltersFacade"
-            }
+            "providers": [],
+            "aliases": {}
         }
     },
     "minimum-stability": "dev",

@@ -23,9 +23,6 @@ class TestCase extends Orchestra
 
         Route::get('/', [TestController::class, 'index'])->name('test');
         Route::get('/auto-apply-filters', [TestController::class, 'indexAutoApply'])->name('test-auto-apply-filters');
-        Builder::macro('autoApplyFilters', function ($query) {
-            dd($query);
-        });
     }
 
     protected function getPackageProviders($app)

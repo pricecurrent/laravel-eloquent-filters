@@ -95,8 +95,9 @@ class EndpointTest extends TestCase
     /**
      * @test
      */
-    public function it_auto_applies_filters_defined_in_the_associated_request_class()
+    public function it_auto_applies_filters_defined_in_the_associated_form_request()
     {
+        $this->withoutExceptionHandling();
         $john = FilterableModel::factory()->create([
                 'name' => 'John', 'age' => 38, 'occupation' => 'php dev',
             ]);
@@ -111,8 +112,8 @@ class EndpointTest extends TestCase
             ]);
 
         $response = $this->json('get', route('test-auto-apply-filters'), [
-                'age' => 18,
-            ]);
+            'age' => 18,
+        ]);
 
         $response->assertOk();
         $this->assertCount(3, $response->json('data'));

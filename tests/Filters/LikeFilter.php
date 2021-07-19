@@ -7,7 +7,7 @@ use Pricecurrent\LaravelEloquentFilters\AbstractQueryFilter;
 use Pricecurrent\LaravelEloquentFilters\Contracts\FieldAgnostic;
 use Pricecurrent\LaravelEloquentFilters\Contracts\QueryFilterContract;
 
-class LikeFilter extends AbstractQueryFilter implements QueryFilterContract, FieldAgnostic
+class LikeFilter extends AbstractQueryFilter
 {
     protected $value;
 
@@ -16,8 +16,8 @@ class LikeFilter extends AbstractQueryFilter implements QueryFilterContract, Fie
         $this->value = $value;
     }
 
-    public function apply(Builder $builder)
+    public function apply(Builder $query): Builder
     {
-        return $builder->where($this->field(), 'like', "%$this->value%");
+        return $query->where($this->field(), 'like', "%$this->value%");
     }
 }
