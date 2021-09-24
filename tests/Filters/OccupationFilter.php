@@ -3,9 +3,9 @@
 namespace Pricecurrent\LaravelEloquentFilters\Tests\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
-use Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilters;
+use Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilter;
 
-class OccupationFilter extends AbstractEloquentFilters
+class OccupationFilter extends AbstractEloquentFilter
 {
     protected $occupation;
 

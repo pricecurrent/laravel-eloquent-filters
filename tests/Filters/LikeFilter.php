@@ -3,9 +3,9 @@
 namespace Pricecurrent\LaravelEloquentFilters\Tests\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
-use Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilters;
+use Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilter;
 
-class LikeFilter extends AbstractEloquentFilters
+class LikeFilter extends AbstractEloquentFilter
 {
     protected $value;
 

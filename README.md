@@ -2,7 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/pricecurrent/laravel-eloquent-filters.svg?style=flat-square)](https://packagist.org/packages/pricecurrent/laravel-eloquent-filters)
 [![run-tests](https://github.com/pricecurrent/laravel-eloquent-filters/actions/workflows/run-tests.yml/badge.svg)](https://github.com/pricecurrent/laravel-eloquent-filters/actions/workflows/run-tests.yml)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/pricecurrent/laravel-eloquent-filters/Check%20&%20fix%20styling?label=code%20style)](https://github.com/pricecurrent/laravel-eloquent-filters/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
+[![GitHub Code Style Action Status](https://github.com/pricecurrent/laravel-eloquent-filters/actions/workflows/php-cs-fixer.yml/badge.svg)](https://github.com/pricecurrent/laravel-eloquent-filters/actions/workflows/php-cs-fixer.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/pricecurrent/laravel-eloquent-filters.svg?style=flat-square)](https://packagist.org/packages/pricecurrent/laravel-eloquent-filters)
 
 ## Installation
@@ -26,28 +26,29 @@ But let's start with simple example:
 Consider you have a Product, and you need to filter products by `name`:
 
 ```php
-use App\Models\Filters\NameFilter;
-// @todo:: import facade path
+use App\Filters\NameFilter;
+use Pricecurrent\LaravelEloquentFilters\EloquentFilters;
 
 class ProductsController
 {
     public function index(Request $request)
     {
-        $filters = Filters::make([new NameFilter($request->name)]);
+        $filters = EloquentFilters::make([new NameFilter($request->name)]);
 
         $products = Product::filter($filters)->get();
     }
 }
 ```
-
+You can generate a filter with the command `php artisan eloquent-filter:make NameFilter`. This will put your Filter to the app/Filters directory by default.
+You may prefix the name with the path, like `Models/Product/NameFilter`
 Here is what your `NameFilter` might look like:
 
 ```php
 use Pricecurrent\LaravelEloquentFilters\Contracts\EloquentFilterContract;
-use Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilters;
+use Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilter;
+use Illuminate\Database\Eloquent\Builder;
 
-// todo:: rename Abstract Query Filter
-class NameFilter extends AbstractEloquentFilters implements EloquentFilterContract
+class NameFilter extends AbstractEloquentFilter
 {
     protected $name;
 
@@ -56,19 +57,9 @@ class NameFilter extends AbstractEloquentFilters implements EloquentFilterContra
         $this->name = $name;
     }
 
-    public function field()
+    public function apply(Builder $builder): Builder
     {
-        return 'name';
-    }
-
-    public function operator()
-    {
-        return 'like';
-    }
-
-    public function value()
-    {
-        return "%{$this->name}%";
+        return $query->where('name', 'like', "{$this->name}%");
     }
 }
 ```
@@ -76,15 +67,15 @@ class NameFilter extends AbstractEloquentFilters implements EloquentFilterContra
 Notice how our Filter has no clue it tied up with a specific Eloquent Model? That means, we can simply re-use it for any other model, where we need to bring in the same name filtering functionality:
 
 ```php
-use App\Models\Filters\NameFilter;
+use App\Filters\NameFilter;
 use App\Models\User;
-// @todo:: import facade path
+use Pricecurrent\LaravelEloquentFilters\EloquentFilters;
 
 class UsersController
 {
     public function index(Request $request)
     {
-        $filters = Filters::make([new NameFilter($request->user_name)]);
+        $filters = EloquentFilters::make([new NameFilter($request->user_name)]);
 
         $products = User::filter($filters)->get();
     }
@@ -94,15 +85,15 @@ class UsersController
 You can chain methods from the filter as if it was a simple Eloquent Builder method:
 
 ```php
-use App\Models\Filters\NameFilter;
+use App\Filters\NameFilter;
 use App\Models\User;
-// @todo:: import facade path
+use Pricecurrent\LaravelEloquentFilters\EloquentFilters;
 
 class UsersController
 {
     public function index(Request $request)
     {
-        $filters = Filters::make([new NameFilter($request->user_name)]);
+        $filters = EloquentFilters::make([new NameFilter($request->user_name)]);
 
         $products = User::query()
             ->filter($filters)
@@ -113,7 +104,7 @@ class UsersController
 }
 ```
 
-To enable filtering capabilities to an Eloquent Model simply import a trait
+To enable filtering capabilities to an Eloquent Model simply import the trait `Filterable`
 
 ```php
 
@@ -126,36 +117,152 @@ class Product extends Model
 }
 ```
 
-### Fine-grained control
+### More complex use-case
 
-If you want to have a complete control over how you implement your query logic, you can implement `apply` method on a filter class directly
+This approach scales very well when you are dealing with a real-life larger applications where querying data from the DB goes far beyond simple comparison by a name field.
+
+Consider an app where we have Stores with a Location coordinates and we have products in stock and we need to query all products that are in stock in a store that is in 10 miles radius
+
+We may stuff all the logic in the controller with some pseudo-code:
 
 ```php
-use Pricecurrent\LaravelEloquentFilters\Contracts\EloquentFilterContract;
 
-class NameFilter implements EloquentFilterContract
+class ProductsController
 {
-    protected $name;
-
-    public function __construct($name)
+    public function index(Request $request)
     {
-        $this->name = $name;
-    }
+        $products Product::query()
+            ->when($request->in_stock, function ($query) {
+                $query->join('product_stock', fn ($q) => $q->on('product_stock.product_id', '=', 'products.id')->where('product_stock.quantity', '>', 0));
+            })
+            ->when($request->within_radius, function ($query) {
+                $coordinates = auth()->user()->getCoordinates();
+                $query->join('stores', 'stores.id', '=', 'product_stock.store_id');
+                $query->whereRaw('
+                    ST_Distance_Sphere(
+                        Point(stores.longitude, stores.latitude),
+                        Point(?, ?)
+                    ) <= ?',
+                    [$coordinates->longitude, $coordinates->latitude, $query->within_radius]
+                );
 
-    public function apply(Builder $builder)
-    {
-        return $builder->where('name', 'like', "%{$this->name}%");
+            })
+            ->get();
+
+        return response()->json(['data' => $products]);
     }
 }
 ```
 
-> Notice how you don't have to extends `\Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilters` class anymore as you are implementing `apply` method manually
+This breaks Open-Closed principle and makes the code harder to test and maintain. Adding new functionality becomes a disaster.
 
+```php
+class ProductsController
+{
+    public function index(Request $request)
+    {
+        $filters = EloquentFilters::make([
+            new ProductInStockFilter($request->in_stock),
+            new StoreWithinDistanceFilter($request->within_radius, auth()->user()->getCoordinates())
+        ]);
+
+        $products = Product::filter($filters)->get();
+
+        return response()->json(['data' => $products]);
+    }
+}
+```
+
+**Much Better!**
+
+We can now distribute the filtering logic to a dedicated class
+
+```php
+class StoreWithinDistanceFilter extends AbstractEloquentFilter
+{
+    public function __construct($distance, Coordinates $fromCoordinates)
+    {
+        $this->distance = $distance;
+        $this->fromCoordinates = $fromCoordinates;
+    }
+
+    public function apply(Builder $builder): Builder
+    {
+        return $builder->join('stores', 'stores.id', '=', 'product_stock.store_id')
+            ->whereRaw('
+                ST_Distance_Sphere(
+                    Point(stores.longitude, stores.latitude),
+                    Point(?, ?)
+                ) <= ?',
+                [$this->coordinates->longitude, $this->coordinates->latitude, $this->distance]
+            );
+    }
+}
+```
+
+Now we have no problem with testing our functionality
+
+```php
+class StoreWithinDistanceFilterTest extends TestCase
+{
+    /**
+     * @test
+     */
+    public function it_filters_products_by_store_distance()
+    {
+        $user = User::factory()->create(['latitude' => '...', 'longitude' => '...']);
+        $store = Store::factory()->create(['latitude' => '...', 'longitude' => '...']);
+        $products = Product::factory()->create();
+        $store->stock()->attach($product, ['quantity' => 3]);
+
+        $result = Product::filter(new EloquentFilters(new StoreWithinDistanceFilter(10, $user->getCoordinates())));
+
+        $this->assertCount(1, $result);
+    }
+}
+```
+
+### Checking filtering is applicable
+
+Each filter provides method `isApplicable()` which you might implement and return boolean. If `false` is returned, the `apply` method won't be called. 
+
+This is helpful when we don't control the incoming parameters to the filter class. In the example above we can do something like this:
+
+```php
+class StoreWithinDistanceFilter extends AbstractEloquentFilter
+{
+    public function __construct($distance, Coordinates $fromCoordinates)
+    {
+        $this->distance = $distance;
+        $this->fromCoordinates = $fromCoordinates;
+    }
+
+    public function isApplicable(): bool
+    {
+        return $this->distance && is_numeric($this->distance);
+    }
+}
+```
+
+Of course you may take another approach where you are in control of what's being passed into the filter parameters, instead of just blindly passing in the request payload.
+You could leverage DTO and type-hinting for that and have Filters collection factories to properly build a collection of filters. For instance
+
+```php
+class ProductsController
+{
+    public function index(IndexProductsRequest $request)
+    {
+        $products = Product::filter(FiltersFactory::fromIndexProductsRequest($request))->get();
+
+        return response()->json(['data' => $products]);
+    }
+}
+```
 
 ## Testing
 
 ```bash
-composer test
+vendor/bin/phpunit
 ```
 
 ## Changelog

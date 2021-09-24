@@ -2,11 +2,11 @@
 
 namespace Pricecurrent\LaravelEloquentFilters\Tests\Filters;
 
-use Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilters;
+use Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilter;
 use Pricecurrent\LaravelEloquentFilters\Contracts\ComposeableFilter;
 use Pricecurrent\LaravelEloquentFilters\Contracts\EloquentFilterContract;
 
-class OccupationOrAgeFilter extends AbstractEloquentFilters implements EloquentFilterContract, ComposeableFilter
+class OccupationOrAgeFilter extends AbstractEloquentFilter implements EloquentFilterContract, ComposeableFilter
 {
     protected $age;
     protected $occupation;

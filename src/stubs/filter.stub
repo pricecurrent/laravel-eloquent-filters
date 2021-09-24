@@ -4,10 +4,9 @@ namespace {{ namespace }};
 
 use {{ rootNamespace }}Filters;
 use Illuminate\Database\Eloquent\Builder;
-use Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilters;
-use Pricecurrent\LaravelEloquentFilters\Contracts\EloquentFilterContract;
+use Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilter;
 
-class {{ class }} implements EloquentFilterContract
+class {{ class }} extends AbstractEloquentFilter
 {
     public function apply(Builder $builder)
     {
