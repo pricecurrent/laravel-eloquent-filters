@@ -3,23 +3,14 @@
 namespace {{ namespace }};
 
 use {{ rootNamespace }}Filters;
-use Pricecurrent\LaravelEloquentFilters\AbstractQueryFilter;
-use Pricecurrent\LaravelEloquentFilters\Contracts\QueryFilterContract;
+use Illuminate\Database\Eloquent\Builder;
+use Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilters;
+use Pricecurrent\LaravelEloquentFilters\Contracts\EloquentFilterContract;
 
-class {{ class }} extends AbstractQueryFilter implements QueryFilterContract
+class {{ class }} implements EloquentFilterContract
 {
-    public function field()
+    public function apply(Builder $builder)
     {
-        return '';
-    }
-
-    public function operator()
-    {
-        return '';
-    }
-
-    public function value()
-    {
-        return '';
+        // your code
     }
 }

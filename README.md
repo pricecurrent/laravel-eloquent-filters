@@ -43,11 +43,11 @@ class ProductsController
 Here is what your `NameFilter` might look like:
 
 ```php
-use Pricecurrent\LaravelEloquentFilters\Contracts\QueryFilterContract;
-use Pricecurrent\LaravelEloquentFilters\AbstractQueryFilter;
+use Pricecurrent\LaravelEloquentFilters\Contracts\EloquentFilterContract;
+use Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilters;
 
 // todo:: rename Abstract Query Filter
-class NameFilter extends AbstractQueryFilter implements QueryFilterContract
+class NameFilter extends AbstractEloquentFilters implements EloquentFilterContract
 {
     protected $name;
 
@@ -131,9 +131,9 @@ class Product extends Model
 If you want to have a complete control over how you implement your query logic, you can implement `apply` method on a filter class directly
 
 ```php
-use Pricecurrent\LaravelEloquentFilters\Contracts\QueryFilterContract;
+use Pricecurrent\LaravelEloquentFilters\Contracts\EloquentFilterContract;
 
-class NameFilter implements QueryFilterContract
+class NameFilter implements EloquentFilterContract
 {
     protected $name;
 
@@ -149,7 +149,7 @@ class NameFilter implements QueryFilterContract
 }
 ```
 
-> Notice how you don't have to extends `\Pricecurrent\LaravelEloquentFilters\AbstractQueryFilter` class anymore as you are implementing `apply` method manually
+> Notice how you don't have to extends `\Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilters` class anymore as you are implementing `apply` method manually
 
 
 ## Testing

@@ -8,10 +8,10 @@ trait Filterable
 {
     /**
      * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  \Pricecurrent\LaravelEloquentFilters\QueryFilters $filters
+     * @param  \Pricecurrent\LaravelEloquentFilters\EloquentFilters $filters
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeFilter(Builder $query, QueryFilters $filters)
+    public function scopeFilter(Builder $query, EloquentFilters $filters)
     {
         return $filters->apply($query);
     }

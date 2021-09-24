@@ -6,7 +6,7 @@ use Illuminate\Console\GeneratorCommand;
 
 class FilterMakeCommand extends GeneratorCommand
 {
-    protected $signature = 'query-filters:make {name} {--composeable} {--raw}';
+    protected $signature = 'eloquent-filter:make {name}';
 
     protected $description = 'Create a Query Filter Class';
 
@@ -24,13 +24,7 @@ class FilterMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        if ($this->option('raw')) {
-            return dirname(__DIR__, 1).'/stubs/filter.raw.stub';
-        }
-
-        return $this->option('composeable')
-            ? dirname(__DIR__, 1).'/stubs/filter.composeable.stub'
-            : dirname(__DIR__, 1).'/stubs/filter.stub';
+        return dirname(__DIR__, 1) . '/stubs/filter.stub';
     }
 
     /**
@@ -41,6 +35,6 @@ class FilterMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Filters';
+        return $rootNamespace . '\Filters';
     }
 }

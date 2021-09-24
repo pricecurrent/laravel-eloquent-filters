@@ -17,34 +17,10 @@ class FilterMakeCommandTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_a_filter_class()
+    public function it_creates_a_fitler_class()
     {
-        Artisan::call('query-filters:make', ['name' => $this->filterName]);
-
-        $this->assertTrue(File::exists($this->filtersPath("$this->filterName.php")));
-    }
-
-    /**
-     * @test
-     */
-    public function it_creates_a_composeable_filter_class()
-    {
-        Artisan::call('query-filters:make', [
+        Artisan::call('eloquent-filter:make', [
             'name' => $this->filterName,
-            '--composeable' => true,
-        ]);
-
-        $this->assertTrue(File::exists($this->filtersPath("$this->filterName.php")));
-    }
-
-    /**
-     * @test
-     */
-    public function it_creates_a_raw_fitler_class()
-    {
-        Artisan::call('query-filters:make', [
-            'name' => $this->filterName,
-            '--raw' => true,
         ]);
 
         $this->assertTrue(File::exists($this->filtersPath("$this->filterName.php")));

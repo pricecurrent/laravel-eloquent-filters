@@ -4,7 +4,7 @@ namespace Pricecurrent\LaravelEloquentFilters\Contracts;
 
 use Illuminate\Database\Eloquent\Builder;
 
-interface QueryFilterContract
+interface EloquentFilterContract
 {
     public function apply(Builder $query): Builder;
 }
