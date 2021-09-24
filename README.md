@@ -13,8 +13,6 @@ You can install the package via composer:
 composer require pricecurrent/laravel-eloquent-filters
 ```
 
-You can publish and run the migrations with:
-
 ## Usage
 
 This package gives you fine-grained control over how you may go about filtering your Eloquent Models.
@@ -40,11 +38,11 @@ class ProductsController
 }
 ```
 You can generate a filter with the command `php artisan eloquent-filter:make NameFilter`. This will put your Filter to the app/Filters directory by default.
-You may prefix the name with the path, like `Models/Product/NameFilter`
+You may prefix the name with the path, like `Models/Product/NameFilter`.
+
 Here is what your `NameFilter` might look like:
 
 ```php
-use Pricecurrent\LaravelEloquentFilters\Contracts\EloquentFilterContract;
 use Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilter;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -64,7 +62,7 @@ class NameFilter extends AbstractEloquentFilter
 }
 ```
 
-Notice how our Filter has no clue it tied up with a specific Eloquent Model? That means, we can simply re-use it for any other model, where we need to bring in the same name filtering functionality:
+Notice how our Filter has no clue it is tied up with a specific Eloquent Model? That means, we can simply re-use it for any other model, where we need to bring in the same name filtering functionality:
 
 ```php
 use App\Filters\NameFilter;
@@ -82,7 +80,7 @@ class UsersController
 }
 ```
 
-You can chain methods from the filter as if it was a simple Eloquent Builder method:
+You can chain methods from the filter as if it was simply an Eloquent Builder method:
 
 ```php
 use App\Filters\NameFilter;
@@ -104,7 +102,7 @@ class UsersController
 }
 ```
 
-To enable filtering capabilities to an Eloquent Model simply import the trait `Filterable`
+To enable filtering capabilities on an Eloquent Model simply import the trait `Filterable`
 
 ```php
 
@@ -215,12 +213,14 @@ class StoreWithinDistanceFilterTest extends TestCase
         $products = Product::factory()->create();
         $store->stock()->attach($product, ['quantity' => 3]);
 
-        $result = Product::filter(new EloquentFilters(new StoreWithinDistanceFilter(10, $user->getCoordinates())));
+        $result = Product::filter(new EloquentFilters([new StoreWithinDistanceFilter(10, $user->getCoordinates())]));
 
         $this->assertCount(1, $result);
     }
 }
 ```
+
+And controller can be just tested with mocks or stubs, just making sure we have called the necessary filters.
 
 ### Checking filtering is applicable
 
@@ -240,6 +240,11 @@ class StoreWithinDistanceFilter extends AbstractEloquentFilter
     public function isApplicable(): bool
     {
         return $this->distance && is_numeric($this->distance);
+    }
+
+    public function apply(Builder $bulder): Builder
+    {
+        // your code
     }
 }
 ```
