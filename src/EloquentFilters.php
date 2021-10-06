@@ -6,28 +6,38 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Pricecurrent\LaravelEloquentFilters\Contracts\EloquentFilterContract;
 use Pricecurrent\LaravelEloquentFilters\Exceptions\EloquentFiltersException;
+use Throwable;
 
 class EloquentFilters extends Collection
 {
+    /**
+     * @param  array $items
+     * @throws Throwable
+     */
     public function __construct($items = [])
     {
-        static::validateParamters($items);
+        static::validateParameters($items);
 
         return parent::__construct($items);
     }
 
     /**
-     * @param  mixed  $items
+     * @param  mixed $items
      * @return static
+     * @throws Throwable
      */
     public static function make($items = [])
     {
-        static::validateParamters($items);
+        static::validateParameters($items);
 
         return parent::make($items);
     }
 
-    public function apply(Builder $builder)
+    /**
+     * @param  Builder $builder
+     * @return Builder
+     */
+    public function apply(Builder $builder): Builder
     {
         $this
             ->removeNotApplicable()
@@ -36,18 +46,23 @@ class EloquentFilters extends Collection
         return $builder;
     }
 
+    /**
+     * @return mixed
+     */
     public function removeNotApplicable()
     {
         return $this->filter->isApplicable();
     }
 
-    protected static function validateParamters($items)
+    /**
+     * @param $items
+     * @throws Throwable
+     */
+    protected static function validateParameters($items)
     {
-        collect($items)->each(
-            fn ($item) => throw_unless(
-                $item instanceof EloquentFilterContract,
-                new EloquentFiltersException("Filter must implement EloquentFilterContract")
-            )
-        );
+        collect($items)->each(fn ($item) => throw_unless(
+            $item instanceof EloquentFilterContract,
+            new EloquentFiltersException("Filter must implement EloquentFilterContract")
+        ));
     }
 }

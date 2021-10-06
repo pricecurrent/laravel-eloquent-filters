@@ -11,7 +11,7 @@ trait Filterable
      * @param  \Pricecurrent\LaravelEloquentFilters\EloquentFilters $filters
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeFilter(Builder $query, EloquentFilters $filters)
+    public function scopeFilter(Builder $query, EloquentFilters $filters): Builder
     {
         return $filters->apply($query);
     }
