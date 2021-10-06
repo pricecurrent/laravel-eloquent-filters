@@ -55,7 +55,7 @@ class NameFilter extends AbstractEloquentFilter
         $this->name = $name;
     }
 
-    public function apply(Builder $builder): Builder
+    public function apply(Builder $query): Builder
     {
         return $query->where('name', 'like', "{$this->name}%");
     }
