@@ -17,12 +17,30 @@ class FilterMakeCommandTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_a_fitler_class()
+    public function it_creates_a_filter_class()
     {
-        Artisan::call('eloquent-filter:make', [
+        Artisan::call('make:eloquent-filter', [
             'name' => $this->filterName,
         ]);
 
-        $this->assertTrue(File::exists($this->filtersPath("$this->filterName.php")));
+        $expectedFile = $this->expectedFilesPath('FilterMakerCommand/it_creates_a_filter_class.php');
+        $resultFile = $this->filtersPath("$this->filterName.php");
+
+        $this->assertFileEquals($expectedFile, $resultFile);
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_a_filter_class_with_field_name()
+    {
+        Artisan::call('make:eloquent-filter', [
+            'name' => $this->filterName,
+            '--field' => 'name',
+        ]);
+        $expectedFile = $this->expectedFilesPath('FilterMakerCommand/it_creates_a_filter_class_with_field_name.php');
+        $resultFile = $this->filtersPath("$this->filterName.php");
+
+        $this->assertFileEquals($expectedFile, $resultFile);
     }
 }

@@ -37,8 +37,22 @@ class ProductsController
     }
 }
 ```
-You can generate a filter with the command `php artisan eloquent-filter:make NameFilter`. This will put your Filter to the app/Filters directory by default.
+
+Generate eloquent-filter
+```bash
+php artisan make:eloquent-filter NameFilter
+```
+
+This will put your Filter to the app/Filters directory by default.
 You may prefix the name with the path, like `Models/Product/NameFilter`.
+```bash
+php artisan make:eloquent-filter Models/Product/NameFilter
+```
+
+You can use the `--field name` argument to generate your filter with the field name
+```bash
+php artisan make:eloquent-filter Models/Product/NameFilter --field name
+```
 
 Here is what your `NameFilter` might look like:
 
@@ -55,7 +69,7 @@ class NameFilter extends AbstractEloquentFilter
         $this->name = $name;
     }
 
-    public function apply(Builder $builder): Builder
+    public function apply(Builder $query): Builder
     {
         return $query->where('name', 'like', "{$this->name}%");
     }
@@ -184,7 +198,7 @@ class StoreWithinDistanceFilter extends AbstractEloquentFilter
         $this->fromCoordinates = $fromCoordinates;
     }
 
-    public function apply(Builder $builder): Builder
+    public function apply(Builder $query): Builder
     {
         return $builder->join('stores', 'stores.id', '=', 'product_stock.store_id')
             ->whereRaw('
@@ -242,7 +256,7 @@ class StoreWithinDistanceFilter extends AbstractEloquentFilter
         return $this->distance && is_numeric($this->distance);
     }
 
-    public function apply(Builder $bulder): Builder
+    public function apply(Builder $query): Builder
     {
         // your code
     }
@@ -267,7 +281,7 @@ class ProductsController
 ## Testing
 
 ```bash
-vendor/bin/phpunit
+composer test
 ```
 
 ## Changelog
