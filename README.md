@@ -49,9 +49,9 @@ You may prefix the name with the path, like `Models/Product/NameFilter`.
 php artisan make:eloquent-filter Models/Product/NameFilter
 ```
 
-You can use the `--field name` argument to generate your filter with the field name
+You can use the `--field=name` argument to generate your filter with the field name
 ```bash
-php artisan make:eloquent-filter Models/Product/NameFilter --field name
+php artisan make:eloquent-filter Models/Product/NameFilter --field=name
 ```
 
 Here is what your `NameFilter` might look like:

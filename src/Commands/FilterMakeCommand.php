@@ -7,7 +7,8 @@ use Symfony\Component\Console\Input\InputOption;
 
 class FilterMakeCommand extends GeneratorCommand
 {
-    protected $signature = 'make:eloquent-filter {name} {--field}';
+    protected $signature = 'make:eloquent-filter {name : The name of the filter}
+    {--field= : The name of the Filter that should be created}';
 
     protected $description = 'Create a Eloquent Filter Class';
 
