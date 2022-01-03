@@ -1,12 +1,12 @@
 <?php
 
-namespace {{ namespace }};
+namespace App\Filters;
 
-use {{ rootNamespace }}Filters;
+use App\Filters;
 use Illuminate\Database\Eloquent\Builder;
 use Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilter;
 
-class {{ class }} extends AbstractEloquentFilter
+class DummyFilter extends AbstractEloquentFilter
 {
     public function apply(Builder $query)
     {

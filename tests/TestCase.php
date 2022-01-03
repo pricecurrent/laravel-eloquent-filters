@@ -35,7 +35,7 @@ class TestCase extends Orchestra
 
     public function getEnvironmentSetUp($app)
     {
-        config()->set('database.default', 'testing');
+        $app['config']->set('database.default', 'testing');
         $this->createTables('filterable_models');
     }
 
@@ -55,8 +55,13 @@ class TestCase extends Orchestra
         });
     }
 
-    public function filtersPath($path = '')
+    public function filtersPath($path = ''): string
     {
         return app_path('Filters' . ($path ? "/$path" : ''));
+    }
+
+    public function expectedFilesPath(string $path): string
+    {
+        return dirname(__FILE__) . '/expectedFiles' . ($path ? "/$path" : '');
     }
 }

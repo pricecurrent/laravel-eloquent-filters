@@ -1,0 +1,22 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ rootNamespace }}Filters;
+use Illuminate\Database\Eloquent\Builder;
+use Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilter;
+
+class {{ class }} extends AbstractEloquentFilter
+{
+    protected ${{ field }};
+
+    public function __constructor(${{ field }})
+    {
+        $this->{{ field }};
+    }
+
+    public function apply(Builder $query): Builder
+    {
+        return $query->where('{{ field }}', 'like', "$this->{{ field }}%");
+    }
+}
