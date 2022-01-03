@@ -2,7 +2,6 @@
 
 namespace {{ namespace }};
 
-use {{ rootNamespace }}Filters;
 use Illuminate\Database\Eloquent\Builder;
 use Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilter;
 
