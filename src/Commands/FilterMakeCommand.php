@@ -68,7 +68,6 @@ class FilterMakeCommand extends GeneratorCommand
         ];
     }
 
-
     /**
      * Build the class with the given name.
      *
