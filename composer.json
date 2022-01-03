@@ -8,15 +8,13 @@
     ],
     "homepage": "https://github.com/pricecurrent/laravel-eloquent-filters",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Andrew Malinnikov",
-            "email": "code.bright.anywhere@gmail.com",
-            "role": "Developer"
-        }
-    ],
+    "authors": [{
+        "name": "Andrew Malinnikov",
+        "email": "code.bright.anywhere@gmail.com",
+        "role": "Developer"
+    }],
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^7.4|^8.0|8.1",
         "spatie/laravel-package-tools": "^1.4.3",
         "illuminate/contracts": "^8.0"
     },
