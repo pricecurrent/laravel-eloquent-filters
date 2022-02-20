@@ -42,7 +42,8 @@ jobs:
                     composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
             -   name: Execute tests
-                run: vendor/bin/phpuni
+                run: vendor/bin/phpunit
+
     test:
         runs-on: ${{ matrix.os }}
         strategy:
