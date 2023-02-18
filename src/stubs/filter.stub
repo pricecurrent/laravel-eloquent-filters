@@ -7,7 +7,7 @@ use Pricecurrent\LaravelEloquentFilters\AbstractEloquentFilter;
 
 class {{ class }} extends AbstractEloquentFilter
 {
-    public function apply(Builder $query)
+    public function apply(Builder $query): Builder
     {
         // your code
     }
